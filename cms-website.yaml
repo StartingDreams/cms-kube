@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cms-website
+  labels:
+    name: frontend
+spec:
+  containers:
+    - image: cms-website
+      name: cms-website
+      env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql.env
+              key: mysql.database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql.env
+              key: mysql.username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql.env
+              key: mysql.password
+      ports:
+        - containerPort: 80
+          name: cms-website
+      volumeMounts:
+          # Name must match the volume name below.
+        - name: cms-disk-media
+          # Mount path within the container.
+          mountPath: /var/www/public/media
+  volumes:
+    - name: cms-disk-media
+      gcePersistentDisk:
+        # This GCE persistent disk must already exist.
+        pdName: cms-media
+        fsType: ext4
