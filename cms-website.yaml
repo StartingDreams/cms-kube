@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: cms-website
+  name: cms-api
   labels:
     name: frontend
 spec:
   containers:
-    - image: cms-website
-      name: cms-website
+    - image: cms-api
+      name: cms-api
       env:
         - name: MYSQL_DATABASE
           valueFrom:
